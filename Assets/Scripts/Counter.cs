@@ -1,59 +1,60 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Counter : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
-    [SerializeField] private float _delay = 0.5f;
-    [SerializeField] private Color _changedColor;
+    private const int MouseButton = 0;
 
+    [SerializeField] private float _delay = 0.5f;
+
+    private Coroutine _coroutine;
     private bool _isClicked = false;
-    private Color _originalColor;
+
+    public event Action<int> NumberCountChanged;
 
     private void Start()
     {
-        _text.text = "";
-        _originalColor = _text.color;
-        StartCoroutine(Countdown(_delay));
+        _coroutine = StartCoroutine(Countdown(_delay));
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(MouseButton))
         {
-            if (_isClicked)
-            {
-                _isClicked = false;
-                _text.color = _originalColor;
-            }
-            else
-            {
-                _isClicked = true;
-                _text.color = _changedColor;
-            }
+            _isClicked = !_isClicked;
         }
-
-        Debug.Log(_isClicked);
     }
 
-    private IEnumerator Countdown(float delay, int start = 100)
+    private IEnumerator Countdown(float delay)
     {
-        var wait = new WaitWhile(() => _isClicked == false);
+        var wait = new WaitForSeconds(delay);
         int currentNumber = 0;
 
-        while (true)
+        while (enabled)
         {
-            DisplayCountdown(currentNumber++);
-            yield return new WaitForSeconds(delay);
+            if (_isClicked)
+                {
+                    currentNumber++;
+                    NumberCountChanged?.Invoke(currentNumber);
+                }
+
             yield return wait;
         }
     }
 
-    private void DisplayCountdown(int count)
+    public void OnClicked(bool isClicked)
     {
-        _text.text = count.ToString("");
+        if (isClicked)
+        {
+            _coroutine = StartCoroutine(Countdown(_delay));
+        }
+        else
+        {
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+            }
+        }
     }
 }
