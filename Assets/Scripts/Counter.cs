@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class Counter : MonoBehaviour
 {
-    private const int MouseButton = 0;
-
     [SerializeField] private float _delay = 0.5f;
 
     private Coroutine _coroutine;
     private bool _isClicked = false;
+
+    public bool IsClicked
+    { 
+        get 
+        { 
+            return _isClicked; 
+        }
+    }
 
     public event Action<int> NumberCountChanged;
 
@@ -18,12 +24,9 @@ public class Counter : MonoBehaviour
         _coroutine = StartCoroutine(Countdown(_delay));
     }
 
-    private void Update()
+    public void ChangeStatusClick()
     {
-        if (Input.GetMouseButtonDown(MouseButton))
-        {
-            _isClicked = !_isClicked;
-        }
+        _isClicked = !_isClicked;
     }
 
     private IEnumerator Countdown(float delay)
@@ -34,27 +37,12 @@ public class Counter : MonoBehaviour
         while (enabled)
         {
             if (_isClicked)
-                {
-                    currentNumber++;
-                    NumberCountChanged?.Invoke(currentNumber);
-                }
-
-            yield return wait;
-        }
-    }
-
-    public void OnClicked(bool isClicked)
-    {
-        if (isClicked)
-        {
-            _coroutine = StartCoroutine(Countdown(_delay));
-        }
-        else
-        {
-            if (_coroutine != null)
             {
-                StopCoroutine(_coroutine);
+                currentNumber++;               
             }
+
+            NumberCountChanged?.Invoke(currentNumber);
+            yield return wait;
         }
     }
 }

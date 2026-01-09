@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 1931029286}
   - component: {fileID: 1931029290}
   - component: {fileID: 1931029291}
+  - component: {fileID: 1931029292}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -641,7 +642,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _counter: {fileID: 1931029290}
   _text: {fileID: 1931029286}
-  _changedColor: {r: 0.4155581, g: 0.7056604, b: 0.14778925, a: 0}
+  _changedColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!114 &1931029292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931029284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11efc866a0588bc44a667ef05e5eee42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _counter: {fileID: 1931029290}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
